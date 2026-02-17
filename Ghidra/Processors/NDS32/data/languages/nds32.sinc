@@ -105,6 +105,7 @@ define token instr32(32)
     Imm12s      = (0, 11) signed
     Imm11s      = (8, 18) signed
     Imm8s       = (0, 7) signed
+    Imm10s      = (0, 9) signed
     sv          = (8, 9)
     SrIdx       = (10, 19)
     Swid        = (5, 19)
@@ -1015,6 +1016,7 @@ define token instr16(16)
     imm6u       = (0, 5)
     imm7u       = (0, 6)
     imm8s       = (0, 7) signed
+    imm9s       = (0, 8) signed
     imm10s      = (0, 9) signed
     xwi37_ls    = (7, 7)
     swid9       = (0, 8)
@@ -1623,3 +1625,32 @@ OffImm12s: (offs) is Imm12s [ offs = Imm12s << 2; ] { export *[const]:4 offs; }
 	fpcsr = Rt;
 }
 
+# Inline function call
+
+# ifcall9
+ifcall9_imm: val is imm9s [ val = inst_start + (imm9s << 1); ] { export *[const]:4 val; }
+
+define pcodeop ifcall9;
+:ifcall9 ifcall9_imm is $(I16) & opc5=0b11110 & ifcall9_imm {
+    ifcall9(ifcall9_imm);
+}
+
+# ifcall
+ifcall_imm: val is Imm24s [ val = inst_start + (Imm24s << 1); ] { export *[const]:4 val; }
+
+define pcodeop ifcall;
+:ifcall ifcall_imm is $(I32) & Opc=0b100111 & ifcall_imm {
+    ifcall(ifcall_imm);
+}
+
+# ifret
+define pcodeop ifret;
+:ifret is $(I32) & Opc=0b100101 & Rt=0 & Imm20u=0b00000000000001100000 {
+    ifret();
+}
+
+# ifret16
+define pcodeop ifret16;
+:ifret16 is $(I16) & opc5=0b00000 & rt5=0b11111 & imm5u=0b11111 {
+    ifret16();
+}
