@@ -8574,3 +8574,94 @@ is sf=1 & b_30=0 & S=0 & b_2428=0x1a & b_2123=0x6 & b_1015=0x1b & Rd_GPR64 & Rn_
 	local test = tmp <= tmp2;
 	Rd_GPR64 = (zext(test)*tmp) + (zext(!test)*(tmp2));
 }
+
+# FEAT_CHK
+define pcodeop chkfeat;
+:chkfeat x16
+is b_0031=0xd503251f & x16 {
+	x16 = chkfeat();
+}
+
+# FEAT_DGH
+define pcodeop dgh;
+:dgh
+is b_0031=0xd50320df {
+	dgh();
+}
+
+# FEAT_CLRBHB
+define pcodeop clrbhb;
+:clrbhb
+is b_0031=0xd50322df {
+	clrbhb();
+}
+
+# FEAT_GCS
+define pcodeop gcsb;
+:gcsb dsync
+is b_0031=0xd503227f {
+	gcsb();
+}
+
+define pcodeop gcspopcx;
+:gcspopcx Rd_GPR64
+is b_0531=0x6a843bd & Rd_GPR64
+{
+	gcspopcx(Rd_GPR64);
+}
+
+define pcodeop gcspopm;
+:gcspopm Rd_GPR64
+is b_0531=0x6a95bb9 & Rd_GPR64
+{
+	gcspopm(Rd_GPR64);
+}
+
+define pcodeop gcspopx;
+:gcspopx Rd_GPR64
+is b_0531=0x6a843be & Rd_GPR64
+{
+	gcspopx(Rd_GPR64);
+}
+
+define pcodeop gcspushm;
+:gcspushm Rd_GPR64
+is b_0531=0x6a85bb8 & Rd_GPR64
+{
+	gcspushm(Rd_GPR64);
+}
+
+define pcodeop gcspushx;
+:gcspushx Rd_GPR64
+is b_0531=0x6a843bc & Rd_GPR64
+{
+	gcspushx(Rd_GPR64);
+}
+
+define pcodeop gcsss1;
+:gcsss1 Rd_GPR64
+is b_0531=0x6a85bba & Rd_GPR64
+{
+	gcsss1(Rd_GPR64);
+}
+
+define pcodeop gcsss2;
+:gcsss2 Rd_GPR64
+is b_0531=0x6a95bbb & Rd_GPR64
+{
+	gcsss2(Rd_GPR64);
+}
+
+define pcodeop gcsstr;
+:gcsstr Rd_GPR64, Rn_GPR64xsp
+is b_1031=0x3647c3 & Rn_GPR64xsp & Rd_GPR64
+{
+	gcsstr(Rd_GPR64, Rn_GPR64xsp);
+}
+
+define pcodeop gcssttr;
+:gcssttr Rd_GPR64, Rn_GPR64xsp
+is b_1031=0x3647c7 & Rn_GPR64xsp & Rd_GPR64
+{
+	gcssttr(Rd_GPR64, Rn_GPR64xsp);
+}
