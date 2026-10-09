@@ -8574,3 +8574,13 @@ is sf=1 & b_30=0 & S=0 & b_2428=0x1a & b_2123=0x6 & b_1015=0x1b & Rd_GPR64 & Rn_
 	local test = tmp <= tmp2;
 	Rd_GPR64 = (zext(test)*tmp) + (zext(!test)*(tmp2));
 }
+
+# FEAT_CFLT
+define pcodeop raise_fault;
+
+:cfltgt "#"^cflt_reason, Rt_GPR32xsp, Rm_GPR32xsp
+if sf=0 & b_2430=0b11101110 & b_b123=0 & Rm_GPR32xsp & b_1215=0 & cflt_reason & b_0509=0b10000 & Rt_GPR32xsp
+{
+	if(Rt_GPR32xsp s<= Rm_GPR32xsp) goto inst_next;
+	raise_fault();
+}
