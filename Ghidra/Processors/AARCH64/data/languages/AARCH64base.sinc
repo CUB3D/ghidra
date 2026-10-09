@@ -8576,11 +8576,21 @@ is sf=1 & b_30=0 & S=0 & b_2428=0x1a & b_2123=0x6 & b_1015=0x1b & Rd_GPR64 & Rn_
 }
 
 # FEAT_CFLT
-define pcodeop raise_fault;
+define pcodeop raise_fault; # TODO
 
-:cfltgt "#"^cflt_reason, Rt_GPR32xsp, Rm_GPR32xsp
-if sf=0 & b_2430=0b11101110 & b_b123=0 & Rm_GPR32xsp & b_1215=0 & cflt_reason & b_0509=0b10000 & Rt_GPR32xsp
+with cflt_cc: {
+	:"gt" is b_2123=0b000 & Rt_GPR32wsp & Rd_GPR32wsp { cmp:1 = Rt_GPR32wsp s> Rd_GPR32wsp; export *:1 cmp; }
+	:"ge" is b_2123=0b001 & Rt_GPR32wsp & Rd_GPR32wsp { cmp:1 = Rt_GPR32wsp s>= Rd_GPR32wsp; export *:1 cmp; }
+	:"hi" is b_2123=0b010 & Rt_GPR32wsp & Rd_GPR32wsp { cmp:1 = Rt_GPR32wsp > Rd_GPR32wsp; export *:1 cmp; }
+	:"hs" is b_2123=0b011 & Rt_GPR32wsp & Rd_GPR32wsp { cmp:1 = Rt_GPR32wsp >= Rd_GPR32wsp; export *:1 cmp; }
+	:"eq" is b_2123=0b110 & Rt_GPR32wsp & Rd_GPR32wsp { cmp:1 = Rt_GPR32wsp == Rd_GPR32wsp; export *:1 cmp; }
+	:"ne" is b_2123=0b111 & Rt_GPR32wsp & Rd_GPR32wsp { cmp:1 = Rt_GPR32wsp != Rd_GPR32wsp; export *:1 cmp; }
+}
+
+#TODO: the rest 
+:cflt^cflt_cc "#"^cflt_reason, Rd_GPR32wsp, Rt_GPR32wsp
+is sf=0 & b_2430=0x76 & cflt_cc & Rt_GPR32wsp & b_1215=0 & cflt_reason & b_0509=0b10000 & Rd_GPR32wsp
 {
-	if(Rt_GPR32xsp s<= Rm_GPR32xsp) goto inst_next;
+	if(!cflt_cc) goto inst_next;
 	raise_fault();
 }

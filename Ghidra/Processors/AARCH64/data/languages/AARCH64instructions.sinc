@@ -1462,6 +1462,8 @@ define token instrAARCH64 (32) endian = little
 	u = (29,29)
 	v = (26,26)
 
+	cflt_reason = (10,11)
+
 	# SVE tokens
 
 	Zd = (0,4)
@@ -1919,6 +1921,9 @@ Rn_GPR32wsp: wsp is aa_Wn=31 & wsp { export wsp; }
 
 Rt_GPR32: aa_Wt is aa_Wt { export aa_Wt; }
 Rt_GPR32: wzr is aa_Wt=31 & wzr { tmp:4 = 0; export tmp; }
+
+Rt_GPR32wsp: aa_Wt is aa_Wt { export aa_Wt; }
+Rt_GPR32wsp: wsp is aa_Wt=31 & wsp { export wsp; }
 
 Rm_GPR64: aa_Xm is aa_Xm { export aa_Xm; }
 Rm_GPR64: xzr is aa_Xm=31 & xzr { export 0:8; }
