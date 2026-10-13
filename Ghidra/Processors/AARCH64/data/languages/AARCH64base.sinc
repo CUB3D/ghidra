@@ -8574,3 +8574,74 @@ is sf=1 & b_30=0 & S=0 & b_2428=0x1a & b_2123=0x6 & b_1015=0x1b & Rd_GPR64 & Rn_
 	local test = tmp <= tmp2;
 	Rd_GPR64 = (zext(test)*tmp) + (zext(!test)*(tmp2));
 }
+
+# FEAT_PAUTH_LR
+:autia171615 is b_0031=0xdac1bbfe
+{
+}
+
+:autiasppc "#"^imm16 is b_2131=0x79c & imm16 & b_0004=0x1f
+{
+}
+
+:autiasppcr Rn_GPR64 is b_1031=0x36b064 & Rn_GPR64 & b_0004=0x1e
+{
+}
+
+:autib171615 is b_0031=0xdac1bffe
+{
+}
+
+:autibsppc "#"^imm16 is b_2131=0x79d & imm16 & b_0004=0x1f
+{
+}
+
+:autibsppcr Rn_GPR64 is b_1031=0x36b065 & Rn_GPR64 & b_0004=0x1e
+{
+}
+
+:pacia171615 is b_0031=0xdac18bfe
+{
+}
+
+:paciasppc is b_0031=0xdac1a3fe
+{
+}
+
+:pacib171615 is b_0031=0xdac18ffe
+{
+}
+
+:pacibsppc is b_0031=0xdac1a7fe
+{
+}
+
+:pacm is b_0031=0xd50324ff
+{
+}
+
+:pacnbiasppc is b_0031=0xdac183fe
+{
+}
+
+:pacnbibsppc is b_0031=0xdac187fe
+{
+}
+
+#TODO: lbl
+:retaasppc imm16 is b_2131=0x2a8 & imm16 & b_0004=0x1f
+{
+}
+
+:retabsppc imm16 is b_2131=0x2a9 & imm16 & b_0004=0x1f
+{
+}
+
+#TODO: no !=
+:retaasppcr Rm_GPR64 is b_1131=0x1acbe1 & b_10=0 & b_0509=0x1f & Rm_GPR64 & b_0004 != 0x1f
+{
+}
+
+:retabsppcr Rm_GPR64 is b_1131=0x1acbe1 & b_10=1 & b_0509=0x1f & Rm_GPR64 & b_0004 != 0x1f
+{
+}
