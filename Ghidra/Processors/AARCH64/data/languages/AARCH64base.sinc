@@ -8574,3 +8574,68 @@ is sf=1 & b_30=0 & S=0 & b_2428=0x1a & b_2123=0x6 & b_1015=0x1b & Rd_GPR64 & Rn_
 	local test = tmp <= tmp2;
 	Rd_GPR64 = (zext(test)*tmp) + (zext(!test)*(tmp2));
 }
+
+define pcodeop AT_S1E1A;
+define pcodeop AT_S1E2A;
+define pcodeop AT_S1E3A;
+
+define pcodeop BRB_IALL;
+define pcodeop BRB_INJ;
+
+define pcodeop DC_CVADP;
+define pcodeop DC_CIPAE;
+define pcodeop DC_CIGDPAE;
+define pcodeop DC_CIPAPA;
+define pcodeop DC_CIGDPAPA;
+define pcodeop DC_CIVAPS;
+define pcodeop DC_CIGDVAPS;
+
+:at "S1E1A", Rt_GPR64
+is b_1931=0b1101010100001 & b_1618=0b000 & b_1215=0b0111 & b_0811=0b1001 & b_0507=0b010 & Rt_GPR64
+{ par_el1 = AT_S1E1A(Rt_GPR64); }
+
+:at "S1E2A", Rt_GPR64
+is b_1931=0b1101010100001 & b_1618=0b100 & b_1215=0b0111 & b_0811=0b1001 & b_0507=0b010 & Rt_GPR64
+{ par_el1 = AT_S1E2A(Rt_GPR64); }
+
+:at "S1E3A", Rt_GPR64
+is b_1931=0b1101010100001 & b_1618=0b110 & b_1215=0b0111 & b_0811=0b1001 & b_0507=0b010 & Rt_GPR64
+{ par_el1 = AT_S1E3A(Rt_GPR64); }
+
+:brb "IALL"
+is b_1931=0b1101010100001 & b_1618=0b001 & b_1215=0b0111 & b_0811=0b0010 & b_0507=0b100
+{ BRB_IALL(); }
+
+:brb "INJ"
+is b_1931=0b1101010100001 & b_1618=0b001 & b_1215=0b0111 & b_0811=0b0010 & b_0507=0b101
+{ BRB_INJ(); }
+
+
+:dc "CVADP", Rt_GPR64
+is b_1931=0b1101010100001 & b_1618=0b011 & b_1215=0b0111 & b_0811=0b1101 & b_0507=0b001 & Rt_GPR64
+{ DC_CVADP(Rt_GPR64); }
+
+:dc "CIPAE", Rt_GPR64
+is b_1931=0b1101010100001 & b_1618=0b100 & b_1215=0b0111 & b_0811=0b1110 & b_0507=0b000 & Rt_GPR64
+{ DC_CIPAE(Rt_GPR64); }
+
+:dc "CIGDPAE", Rt_GPR64
+is b_1931=0b1101010100001 & b_1618=0b100 & b_1215=0b0111 & b_0811=0b1110 & b_0507=0b111 & Rt_GPR64
+{ DC_CIGDPAE(Rt_GPR64); }
+
+:dc "CIPAPA", Rt_GPR64
+is b_1931=0b1101010100001 & b_1618=0b110 & b_1215=0b0111 & b_0811=0b1110 & b_0507=0b001 & Rt_GPR64
+{ DC_CIPAPA(Rt_GPR64); }
+
+:dc "CIGDPAPA", Rt_GPR64
+is b_1931=0b1101010100001 & b_1618=0b110 & b_1215=0b0111 & b_0811=0b1110 & b_0507=0b101 & Rt_GPR64
+{ DC_CIGDPAPA(Rt_GPR64); }
+
+:dc "CIVAPS", Rt_GPR64
+is b_1931=0b1101010100001 & b_1618=0b000 & b_1215=0b0111 & b_0811=0b1111 & b_0507=0b001 & Rt_GPR64
+{ DC_CIVAPS(Rt_GPR64); }
+
+:dc "CIGDVAPS", Rt_GPR64
+is b_1931=0b1101010100001 & b_1618=0b000 & b_1215=0b0111 & b_0811=0b1111 & b_0507=0b101 & Rt_GPR64
+{ DC_CIGDVAPS(Rt_GPR64); }
+
