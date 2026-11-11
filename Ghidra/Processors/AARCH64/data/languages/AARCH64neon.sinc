@@ -31641,6 +31641,7 @@ is b_2131=0b01001110100 & Rm_VPR128.16B & b_1015=0b101011 & Rn_VPR128.16B & Rd_V
 }
 
 # FEAT_FP8FMA
+
 define pcodeop NEON_fmlalb;
 define pcodeop NEON_fmlalt;
 define pcodeop NEON_fmlallbb;
@@ -31648,15 +31649,17 @@ define pcodeop NEON_fmlallbt;
 define pcodeop NEON_fmlalltb;
 define pcodeop NEON_fmlalltt;
 
-# todo
-
-:fmlalb Rd_VPR128.8H, Rn_VPR128.16B, Re_VPR128Lo.H.vIndexHLM
-is b_3131=0 & Q=0 & b_2229=0b00111111 & Re_VPR128Lo.H.vIndexHLM & b_1215=0b0000 & b_1010=0 & Rn_VPR128.16B & Rd_VPR128.8H
+:fmlalb Rd_VPR128.8H, Rn_VPR128.16B, Re_VPR128Lo3.B.vIndexB
+is b_3131=0 & q=0 & b_2429=0b001111 & b_2223=0b11 & b_1215=0b0000 & b_10=0 & Re_VPR128Lo3.B.vIndexB & Rn_VPR128.16B & Rd_VPR128.8H & Zd
 {
-	Rd_VPR128.8H = NEON_fmlalb(Rd_VPR128.8H, Rn_VPR128.16B, Re_VPR128Lo.H.vIndexHLM);
+	Rd_VPR128.8H = NEON_fmlalb(Rd_VPR128.8H, Rn_VPR128.16B, Re_VPR128Lo3.B.vIndexB);
 }
 
-
+:fmlalt Rd_VPR128.8H, Rn_VPR128.16B, Re_VPR128Lo3.B.vIndexB
+is b_3131=0 & q=1 & b_2429=0b001111 & b_2223=0b11 & b_1215=0b0000 & b_10=0 & Re_VPR128Lo3.B.vIndexB & Rn_VPR128.16B & Rd_VPR128.8H & Zd
+{
+	Rd_VPR128.8H = NEON_fmlalt(Rd_VPR128.8H, Rn_VPR128.16B, Re_VPR128Lo3.B.vIndexB);
+}
 
 :fmlalb Rd_VPR128.8H, Rn_VPR128.16B, Rm_VPR128.16B
 is b_3131=0 & q=0 & u=0 & b_2428=0xe & advSIMD3.size=0b11 & b_2121=0 & Rm_VPR128.16B & b_1115=0x1f & b_1010=1 & Rn_VPR128.16B & Rd_VPR128.8H & Zd
@@ -31670,7 +31673,29 @@ is b_3131=0 & q=1 & u=0 & b_2428=0xe & advSIMD3.size=0b11 & b_2121=0 & Rm_VPR128
 	Rd_VPR128.8H = NEON_fmlalt(Rd_VPR128.8H, Rn_VPR128.16B, Rm_VPR128.16B);
 }
 
-#todo
+:fmlallbb Rd_VPR128.4S, Rn_VPR128.16B, Re_VPR128Lo3.B.vIndexB
+is b_3131=0 & q=0 & b_2429=0b101111 & b_23=0 & b_22=0 & b_1215=0b1000 & b_10=0 & Re_VPR128Lo3.B.vIndexB & Rn_VPR128.16B & Rd_VPR128.4S & Zd
+{
+	Rd_VPR128.4S = NEON_fmlallbb(Rd_VPR128.4S, Rn_VPR128.16B, Re_VPR128Lo3.B.vIndexB);
+}
+
+:fmlallbt Rd_VPR128.4S, Rn_VPR128.16B, Re_VPR128Lo3.B.vIndexB
+is b_3131=0 & q=0 & b_2429=0b101111 & b_23=0 & b_22=1 & b_1215=0b1000 & b_10=0 & Re_VPR128Lo3.B.vIndexB & Rn_VPR128.16B & Rd_VPR128.4S & Zd
+{
+	Rd_VPR128.4S = NEON_fmlallbt(Rd_VPR128.4S, Rn_VPR128.16B, Re_VPR128Lo3.B.vIndexB);
+}
+
+:fmlalltb Rd_VPR128.4S, Rn_VPR128.16B, Re_VPR128Lo3.B.vIndexB
+is b_3131=0 & q=1 & b_2429=0b101111 & b_23=0 & b_22=0 & b_1215=0b1000 & b_10=0 & Re_VPR128Lo3.B.vIndexB & Rn_VPR128.16B & Rd_VPR128.4S & Zd
+{
+	Rd_VPR128.4S = NEON_fmlalltb(Rd_VPR128.4S, Rn_VPR128.16B, Re_VPR128Lo3.B.vIndexB);
+}
+
+:fmlalltt Rd_VPR128.4S, Rn_VPR128.16B, Re_VPR128Lo3.B.vIndexB
+is b_3131=0 & q=1 & b_2429=0b101111 & b_23=0 & b_22=1 & b_1215=0b1000 & b_10=0 & Re_VPR128Lo3.B.vIndexB & Rn_VPR128.16B & Rd_VPR128.4S & Zd
+{
+	Rd_VPR128.4S = NEON_fmlalltt(Rd_VPR128.4S, Rn_VPR128.16B, Re_VPR128Lo3.B.vIndexB);
+}
 
 :fmlallbb Rd_VPR128.4S, Rn_VPR128.16B, Rm_VPR128.16B
 is b_3131=0 & q=0 & u=0 & b_2428=0xe & advSIMD3.size=0 & b_2121=0 & Rm_VPR128.16B & b_1115=0x18 & b_1010=1 & Rn_VPR128.16B & Rd_VPR128.4S & Zd
@@ -31695,5 +31720,3 @@ is b_3131=0 & q=1 & u=0 & b_2428=0xe & advSIMD3.size=1 & b_2121=0 & Rm_VPR128.16
 {
 	Rd_VPR128.4S = NEON_fmlalltt(Rd_VPR128.4S, Rn_VPR128.16B, Rm_VPR128.16B);
 }
-
-# TODO

@@ -1059,6 +1059,7 @@ define token instrAARCH64 (32) endian = little
 
 	Re_VPR128 = (16,20)
 	Re_VPR128Lo = (16,19)
+	Re_VPR128Lo3 = (16,18)
 	Rm_VPR128 = (16,20)
 	Rm_VPR128Lo = (16,19)
 	Rn_VPR128 = (5,9)
@@ -1079,6 +1080,7 @@ define token instrAARCH64 (32) endian = little
 	vRm_VPR128Lo = (16,19)
 	vRe_VPR128 = (16,20)
 	vRe_VPR128Lo = (16,19)
+	vRe_VPR128Lo3 = (16,18)
 	vRn_VPR64 = (5,9)
 	vRd_VPR64 = (0,4)
 	vRm_VPR128 = (16,20)
@@ -1484,6 +1486,7 @@ define token instrAARCH64 (32) endian = little
 	sve_b_0609 = (6,9)
 	sve_b_09 = (9,9)
 	sve_b_10 = (10,10)
+	sve_b_1011 = (10,11)
 	sve_b_1015 = (10,15)
 	sve_b_1019 = (10,19)
 	sve_b_1021 = (10,21)
@@ -1721,7 +1724,11 @@ attach names [ vRnnnn_VPR128 ]
 
 attach variables [ Rm_VPR128Lo Re_VPR128Lo ] [ q0 q1 q2 q3 q4 q5 q6 q7 q8 q9 q10 q11 q12 q13 q14 q15 ];
 
+attach variables [ Re_VPR128Lo3 ] [ q0 q1 q2 q3 q4 q5 q6 q7 ];
+
 attach names [ vRm_VPR128Lo vRe_VPR128Lo ] [ v0 v1 v2 v3 v4 v5 v6 v7 v8 v9 v10 v11 v12 v13 v14 v15 ];
+
+attach names [ vRe_VPR128Lo3 ] [ v0 v1 v2 v3 v4 v5 v6 v7 ];
 
 attach variables [ Rm_VPR64 Rn_VPR64 Rd_VPR64 Rt_VPR64 ]
 [
@@ -2676,6 +2683,19 @@ Re_VPR128.D.sel: Re_VPR128, val is Re_VPR128 & b_2222=1 & b_2121=0 & b_1111 [ va
 @endif
 
 Re_VPR128.B.vIndex: Re_VPR128.B^"["^vIndex^"]" is Re_VPR128.B & vIndex & Re_VPR128.B.sel { export Re_VPR128.B.sel; }
+
+vIndexB: val is b_11 & b_1921 [ val = b_11 << 3 | b_1921; ] { export *[const]:8 val; }
+
+Re_VPR128Lo3.B: vRe_VPR128Lo3^".B" is Re_VPR128Lo3 & vRe_VPR128Lo3 { export Re_VPR128Lo3; }
+
+@if DATA_ENDIAN == "little"
+Re_VPR128Lo3.B.sel: Re_VPR128Lo3, val is Re_VPR128Lo3 & b_11 & b_1921 [ val = 0x5000 + 32*Re_VPR128Lo3 + b_11 * 8 + b_1921; ] { export *[register]:1 val; }
+@else
+Re_VPR128Lo3.B.sel: Re_VPR128Lo3, val is Re_VPR128Lo3 & b_11 & b_1921 [ val = 0x501f + 32*Re_VPR128Lo3 - b_11 * 8 - b_1921; ] { export *[register]:1 val; }
+@endif
+
+Re_VPR128Lo3.B.vIndexB: Re_VPR128Lo3.B^"["^vIndexB^"]" is Re_VPR128Lo3.B & vIndexB & Re_VPR128Lo3.B.sel { export Re_VPR128Lo3.B.sel; }
+
 Re_VPR128.S.vIndex: Re_VPR128.S^"["^vIndex^"]" is Re_VPR128.S & vIndex & Re_VPR128.S.sel { export Re_VPR128.S.sel; }
 Re_VPR128.D.vIndex: Re_VPR128.D^"["^vIndex^"]" is Re_VPR128.D & vIndex & Re_VPR128.D.sel { export Re_VPR128.D.sel; }
 
@@ -2866,7 +2886,7 @@ Zm.Tb_sz: sve_zm_1620^".H" is sve_zm_1620 & sve_sz_22=1 { export sve_zm_1620; }
 # Zm.Tb: sve_zm_1620^".H" is sve_zm_1620 & sve_size_2223=0b10 { export sve_zm_1620; }
 # Zm.Tb: sve_zm_1620^".S" is sve_zm_1620 & sve_size_2223=0b11 { export sve_zm_1620; }
 
-# Zm.B: sve_zm_1620^".B" is sve_zm_1620 { export sve_zm_1620; }
+Zm.B: sve_zm_1620^".B" is sve_zm_1620 { export sve_zm_1620; }
 # Zm.H: sve_zm_1620^".H" is sve_zm_1620 { export sve_zm_1620; }
 Zm.S: sve_zm_1620^".S" is sve_zm_1620 { export sve_zm_1620; }
 Zm.D: sve_zm_1620^".D" is sve_zm_1620 { export sve_zm_1620; }
@@ -2918,6 +2938,7 @@ Pm.B: sve_pm_1619^".B" is sve_pm_1619 { export sve_pm_1619; }
 # Pm.D: sve_pm_1619^".D" is sve_pm_1619 { export sve_pm_1619; }
 
 sve_i3h_i3l: tmp is sve_i3h_22 & sve_i3l_1920 [ tmp = sve_i3h_22 * 4 + sve_i3l_1920; ] { export *[const]:1 tmp; }
+sve_i4_1011_1920: tmp is sve_i2_1920 & sve_b_1011 [ tmp = sve_i2_1920 * 4 + sve_b_1011; ] { export *[const]:1 tmp; }
 sve_imm3_1_0to7: sve_imm3_1618 is sve_imm3_1618 { export *[const]:1 sve_imm3_1618; }
 sve_imm4_1_1to16: tmp is sve_imm4_1619 [ tmp = sve_imm4_1619 + 1; ] { export *[const]:1 tmp; }
 sve_imm4_1_m128to112: tmp is sve_imm4s_1619 [ tmp = sve_imm4s_1619 * 16; ] { export *[const]:1 tmp; }
@@ -3522,6 +3543,12 @@ define pcodeop SVE_fminnm;
 define pcodeop SVE_fminnmv;
 define pcodeop SVE_fminv;
 define pcodeop SVE_fmla;
+define pcodeop SVE_fmlalb;
+define pcodeop SVE_fmlalt;
+define pcodeop SVE_fmlallbb;
+define pcodeop SVE_fmlallbt;
+define pcodeop SVE_fmlalltb;
+define pcodeop SVE_fmlalltt;
 define pcodeop SVE_fmls;
 define pcodeop SVE_fmov;
 define pcodeop SVE_fmsb;
